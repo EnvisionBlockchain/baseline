@@ -29,8 +29,7 @@ const useStyles = makeStyles(() => ({
 const UserSelection = () => {
   const classes = useStyles();
   const [data, setData] = useState({ status: 504 });
-  // if you want radish34 to be seen outside of localhost (ie. Azure, AWS, etc.) replace const apiURL = window.localStorage.getItem('api') || 'localhost:8001/graphql' with const apiURL = window.localStorage.getItem('api') || 'public ip address:8001/graphql'
-  const apiURL = window.localStorage.getItem('api') || 'localhost:8001/graphql';
+  const apiURL = window.localStorage.getItem('api') || '52.177.117.104:8001/graphql';
   const user = window.localStorage.getItem('username') || 'Org1';
   const { settings } = useContext(ServerSettingsContext);
   const { organizationAddress } = settings || {};
@@ -38,7 +37,7 @@ const UserSelection = () => {
 
   const fetchHealthCheck = useCallback(async () => {
     const urlArray = apiURL.split('graphql');
-    const healthURL = `http://${urlArray[0]}health`;
+    const healthURL = `http://${urlArray[0]}api/v1/health-check`;
     const result = await fetch(healthURL);
     setData(result);
   }, [apiURL]);
@@ -51,16 +50,11 @@ const UserSelection = () => {
     if (organizationAddress) localStorage.setItem('userAddress', organizationAddress);
   }, [organizationAddress]);
 
-  // If you want radish34 to be seen outside of localhost (ie. Azure, AWS, etc.) replace the following below:
-  // Org1: { url: 'localhost:8001/graphql', role: 1 } with Org1: { url: 'public ip address:8001/graphql', role: 1 }
-  // Supplier1: { url: 'localhost:8002/graphql', role: 2 } with Supplier1: { url: 'public ip address:8002/graphql', role: 2 } 
-  // Supplier2: { url: 'localhost:8003/graphql', role: 2 } with Supplier2: { url: 'public ip address:8003/graphql', role: 2 }
-  
   const handleChange = event => {
     const users = {
-      Org1: { url: 'localhost:8001/graphql', role: 1 },
-      Supplier1: { url: 'localhost:8002/graphql', role: 2 },
-      Supplier2: { url: 'localhost:8003/graphql', role: 2 },
+      Org1: { url: '52.177.117.104:8001/graphql', role: 1 },
+      Supplier1: { url: '52.177.117.104:8002/graphql', role: 2 },
+      Supplier2: { url: '52.177.117.104:8003/graphql', role: 2 },
     };
 
     window.location.reload(false);
