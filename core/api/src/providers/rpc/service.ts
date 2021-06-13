@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { RpcConfig } from './config';
-import { IBaselineRPC, IBlockchainService, MerkleTreeNode, IRegistry, IVault } from '../..';
+import { IBaselineRPC, IBlockchainService, MerkleTreeNode, IRegistry, IVault, PushCommitmentResponse, Commitment } from '../..';
 
 const defaultJsonRpcUrl = 'http://localhost:8545';
 const defaultJsonRpcVersion = '2.0';
@@ -46,44 +46,40 @@ export class Rpc implements IBaselineRPC, IBlockchainService, IRegistry, IVault 
 
   // BaselineRPC impl
 
-  async deploy(sender: string, bytecode: string, abi: any): Promise<any> {
-    return await this.call('baseline_deploy', [sender, bytecode, abi]);
+  async getCommit(address: string, index: number): Promise<Commitment> {
+    return await this.call('baseline_getCommit', [address, index]);
   }
 
-  async getLeaf(address: string, index: number): Promise<MerkleTreeNode> {
-    return await this.call('baseline_getLeaf', [address, index]);
-  }
-
-  async getLeaves(address: string, indexes: number[]): Promise<MerkleTreeNode[]> {
-    return await this.call('baseline_getLeaves', [address, indexes]);
+  async getCommits(address: string, startIndex: number, count: number): Promise<Commitment[]> {
+    return await this.call('baseline_getCommits', [address, startIndex, count]);
   }
 
   async getRoot(address: string): Promise<string> {
     return await this.call('baseline_getRoot', [address]);
   }
 
-  async getSiblings(address: string, leafIndex: number): Promise<MerkleTreeNode[]> {
-    return await this.call('baseline_getSiblings', [address, leafIndex]);
+  async getProof(address: string, commitIndex: number): Promise<Commitment[]> {
+    return await this.call('baseline_getProof', [address, commitIndex]);
   }
 
   async getTracked(): Promise<string[]> {
     return await this.call('baseline_getTracked', []);
   }
 
-  async insertLeaf(sender: string, address: string, value: string): Promise<MerkleTreeNode> {
-    return await this.call('baseline_insertLeaf', [sender, address, value]);
-  }
-
-  async insertLeaves(sender: string, address: string, value: string): Promise<MerkleTreeNode> {
-    return await this.call('baseline_insertLeaves', [sender, address, value]);
-  }
-
   async track(address: string): Promise<boolean> {
     return await this.call('baseline_track', [address]);
   }
 
-  async verify(address: string, root: string, leaf: string, siblingPath: MerkleTreeNode[]): Promise<boolean> {
-    return await this.call('baseline_verify', [address, root, leaf, siblingPath]);
+  async untrack(address: string, prune?: boolean): Promise<boolean> {
+    return await this.call('baseline_untrack', [address, prune]);
+  }
+
+  async verify(address: string, root: string, commit: string, siblingPath: Commitment[]): Promise<boolean> {
+    return await this.call('baseline_verify', [address, root, commit, siblingPath]);
+  }
+
+  async verifyAndPush(sender: string, address: string, proof: number[], publicInputs: string[], value: string): Promise<PushCommitmentResponse> {
+    return await this.call('baseline_verifyAndPush', [sender, address, proof, publicInputs, value]);
   }
 
   // IBlockchainService impl

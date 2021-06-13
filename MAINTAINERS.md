@@ -23,6 +23,8 @@ Code and Systems maintainers
   - [George Spasov](https://github.com/Perseverance)
   - [Tomasz Stanczak](https://github.com/tkstanczak)
   - [Lucas Rodriguez Benitez](https://github.com/LucasRodriguez)
+  - [Anais Ofranc](https://github.com/Consianimis)
+  - [Hamza Tokuchi](https://github.com/Meuko) - [BlockLab](https://www.blocklab.nl/)
 
 # How to become a maintainer?
 

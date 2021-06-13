@@ -9,3 +9,7 @@ This package is under development for a future release. When complete, it will f
 ## Building
 
 You can build the package locally with `npm run build`.
+
+## Baseline State Tracking
+
+To help track the status of baselined documents and data fields: `import { State } from @baseline-protocol/types`
